@@ -3,24 +3,14 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
 
-    <!-- Existing hello-servlet mapping -->
+    <!-- DriverController Servlet mapping -->
     <servlet>
-        <servlet-name>helloServlet</servlet-name>
-        <servlet-class>com.example.cabservice.HelloServlet</servlet-class>
+        <servlet-name>DriverController</servlet-name>
+        <servlet-class>com.example.cabservice.controller.DriverController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>helloServlet</servlet-name>
-        <url-pattern>/hello-servlet</url-pattern>
-    </servlet-mapping>
-
-    <!-- New servlet mapping for /new-endpoint -->
-    <servlet>
-        <servlet-name>newEndpointServlet</servlet-name>
-        <servlet-class>com.example.cabservice.HelloServlet$NewEndpointServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>newEndpointServlet</servlet-name>
-        <url-pattern>/new-endpoint</url-pattern>
+        <servlet-name>DriverController</servlet-name>
+        <url-pattern>/driver</url-pattern>
     </servlet-mapping>
 
 </web-app>
