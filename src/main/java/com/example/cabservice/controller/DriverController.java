@@ -1,6 +1,8 @@
 package com.example.cabservice.controller;
 
 import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.exceptions.AlreadyAvailableException;
+import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.factory.DriverFactory;
 import com.example.cabservice.service.DriverServiceInterface;
 import com.example.cabservice.util.JsonUtil;
@@ -30,12 +32,17 @@ public class DriverController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
         DriverDTO driverDTO = JsonUtil.parseDriverJson(json);
-
         try {
             driverService.addDriver(driverDTO);
-            response.setStatus(HttpServletResponse.SC_CREATED); // 201 status
+            response.setStatus(HttpServletResponse.SC_CREATED);
             response.getWriter().write("{\"message\":\"Driver created successfully\"}");
-        } catch (SQLException e) {
+        } catch (AlreadyAvailableException ex) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            response.getWriter().write("{\"error\":\""+ ex.getMessage() +"\"}");
+        } catch (NotFoundException ex) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("{\"error\":\""+ ex.getMessage() +"\"}");
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\":\"Error creating driver\"}");
         }

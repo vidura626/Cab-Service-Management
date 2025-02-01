@@ -7,7 +7,7 @@ public class DatabaseConnectionManager {
     private Connection connection;
 
     private DatabaseConnectionManager() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/yourdb", "username", "password");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cab_service?createDatabaseIfNotExist=true", "root", "1234");
     }
 
     public static synchronized DatabaseConnectionManager getInstance() throws SQLException {
