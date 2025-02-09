@@ -4,14 +4,11 @@ import com.example.cabservice.dao.DriverDAOInterface;
 import com.example.cabservice.entity.Driver;
 import com.example.cabservice.exceptions.AlreadyAvailableException;
 import com.example.cabservice.exceptions.NotFoundException;
+import com.example.cabservice.util.enums.DriverStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class DriverDAOInterfaceImpl implements DriverDAOInterface {
     private Connection connection;
@@ -22,22 +19,26 @@ public class DriverDAOInterfaceImpl implements DriverDAOInterface {
 
     @Override
     public void createDriver(Driver driver) throws SQLException {
-
-        String query = "SELECT COUNT(*) from cab_service.driver dr where dr.name=? and dr.address=? and dr.dob=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, driver.getName());
-            stmt.setString(2, driver.getAddress());
-            stmt.setDate(3, driver.getDob());
+        String checkQuery = "SELECT COUNT(*) FROM cab_service.driver WHERE nic = ? OR licence = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(checkQuery)) {
+            stmt.setString(1, driver.getNic());
+            stmt.setString(2, driver.getLicence());
             ResultSet rs = stmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                throw new AlreadyAvailableException("Driver already exists with the same details");
+                throw new AlreadyAvailableException("Driver with this NIC or Licence already exists.");
             }
         }
-        query = "INSERT INTO cab_service.driver (name, address, dob) VALUES (?, ?, ?)";
+
+        String query = "INSERT INTO cab_service.driver (name, nic, address, dob, licence, status, image, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, driver.getName());
-            stmt.setString(2, driver.getAddress());
-            stmt.setDate(3, driver.getDob());
+            stmt.setString(2, driver.getNic());
+            stmt.setString(3, driver.getAddress());
+            stmt.setDate(4, driver.getDob());  // Use java.sql.Date
+            stmt.setString(5, driver.getLicence());
+            stmt.setString(6, driver.getStatus().getStatus());
+            stmt.setString(7, driver.getImage());
+            stmt.setBoolean(8, driver.isActive());
             stmt.executeUpdate();
         }
     }
@@ -52,8 +53,14 @@ public class DriverDAOInterfaceImpl implements DriverDAOInterface {
                 Driver driver = new Driver();
                 driver.setId(rs.getInt("id"));
                 driver.setName(rs.getString("name"));
+                driver.setNic(rs.getString("nic"));
                 driver.setAddress(rs.getString("address"));
                 driver.setDob(rs.getDate("dob"));
+                driver.setLicence(rs.getString("licence"));
+                System.out.println(rs.getString("status"));
+                driver.setStatus(DriverStatus.fromString(rs.getString("status")));
+                driver.setImage(rs.getString("image"));
+                driver.setActive(rs.getBoolean("isActive"));
                 return driver;
             }
             return null;
@@ -62,104 +69,87 @@ public class DriverDAOInterfaceImpl implements DriverDAOInterface {
 
     @Override
     public void updateDriver(Driver driver) throws SQLException, NotFoundException {
-        String checkQuery = "SELECT COUNT(*) FROM cab_service.driver WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(checkQuery)) {
-            statement.setInt(1, driver.getId());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next() && rs.getInt(1) == 0) {
-                throw new NotFoundException("Driver not found");
+        String query = "UPDATE cab_service.driver SET name = ?, address = ?, dob = ?, licence = ?, status = ?, image = ?, isActive = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, driver.getName());
+            stmt.setString(2, driver.getAddress());
+            stmt.setDate(3, driver.getDob());
+            stmt.setString(4, driver.getLicence());
+            stmt.setString(5, driver.getStatus().getStatus());
+            stmt.setString(6, driver.getImage());
+            stmt.setBoolean(7, driver.isActive());
+            stmt.setInt(8, driver.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new NotFoundException("Driver not found with id: " + driver.getId());
             }
-        }
-
-        StringBuilder query = new StringBuilder("UPDATE cab_service.driver SET ");
-        List<Object> params = new ArrayList<>();
-
-        if (driver.getName() != null) {
-            query.append("name = ?, ");
-            params.add(driver.getName());
-        }
-        if (driver.getAddress() != null) {
-            query.append("address = ?, ");
-            params.add(driver.getAddress());
-        }
-        if (driver.getDob() != null) {
-            query.append("dob = ?, ");
-            params.add(driver.getDob());
-        }
-
-        if (params.isEmpty()) {
-            return;
-        }
-
-        query.setLength(query.length() - 2);
-        query.append(" WHERE id = ?");
-        params.add(driver.getId());
-
-        try (PreparedStatement stmt = connection.prepareStatement(query.toString())) {
-            for (int i = 0; i < params.size(); i++) {
-                if (params.get(i) instanceof String) {
-                    stmt.setString(i + 1, (String) params.get(i));
-                } else if (params.get(i) instanceof java.sql.Date) {
-                    stmt.setDate(i + 1, (java.sql.Date) params.get(i));
-                } else if (params.get(i) instanceof Integer) {
-                    stmt.setInt(i + 1, (Integer) params.get(i));
-                }
-            }
-            stmt.executeUpdate();
         }
     }
 
     @Override
-    public List<Driver> getAllDrivers() {
-        String query = "SELECT * FROM cab_service.driver";
+    public List<Driver> getAllDrivers() throws SQLException {
         List<Driver> driverList = new ArrayList<>();
-
+        String query = "SELECT * FROM cab_service.driver";
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-
             while (rs.next()) {
                 Driver driver = new Driver();
                 driver.setId(rs.getInt("id"));
                 driver.setName(rs.getString("name"));
+                driver.setNic(rs.getString("nic"));
                 driver.setAddress(rs.getString("address"));
                 driver.setDob(rs.getDate("dob"));
+                driver.setLicence(rs.getString("licence"));
+                driver.setStatus(DriverStatus.fromString(rs.getString("status")));
+                driver.setImage(rs.getString("image"));
+                driver.setActive(rs.getBoolean("isActive"));
                 driverList.add(driver);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getLocalizedMessage());
         }
-
         return driverList;
     }
 
     @Override
     public void deleteDriver(int driverId) throws SQLException, NotFoundException {
-        // Check if the driver exists
-        String checkQuery = "SELECT COUNT(*) FROM cab_service.driver WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(checkQuery)) {
+        String query = "DELETE FROM cab_service.driver WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, driverId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next() && rs.getInt(1) == 0) {
-                // If no driver is found, throw a NotFoundException
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
                 throw new NotFoundException("Driver not found with id: " + driverId);
             }
         }
+    }
 
-        // Proceed to delete the driver if it exists
-        String deleteQuery = "DELETE FROM cab_service.driver WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
-            stmt.setInt(1, driverId);
-            int rowsAffected = stmt.executeUpdate();
-
-            // If no rows were affected, the deletion did not succeed
-            if (rowsAffected == 0) {
-                throw new SQLException("Failed to delete driver with id: " + driverId);
-            }
-        } catch (SQLException e) {
-            // Catch and rethrow SQLException if any issue occurs during deletion
-            throw new SQLException("Error occurred while deleting the driver: " + e.getMessage(), e);
+    @Override
+    public void setActiveStatus(int driverId, boolean isActive) throws SQLException {
+        String query = "UPDATE cab_service.driver SET isActive = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setBoolean(1, isActive);
+            stmt.setInt(2, driverId);
+            stmt.executeUpdate();
         }
     }
 
+    @Override
+    public void uploadImage(int driverId, String image) throws SQLException {
+        String query = "UPDATE cab_service.driver SET image = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, image);
+            stmt.setInt(2, driverId);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void changeStatus(int driverId, String status) throws SQLException {
+        String query = "UPDATE cab_service.driver SET status = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, driverId);
+            stmt.executeUpdate();
+        }
+    }
 }
+

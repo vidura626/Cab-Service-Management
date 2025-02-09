@@ -1,7 +1,8 @@
 package com.example.cabservice.service.impl;
 
 import com.example.cabservice.dao.DriverDAOInterface;
-import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.dto.request.DriverRequestDto;
+import com.example.cabservice.dto.response.DriverResponseDto;
 import com.example.cabservice.entity.Driver;
 import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.service.DriverServiceInterface;
@@ -18,30 +19,46 @@ public class DriverServiceInterfaceImpl implements DriverServiceInterface {
     }
 
     @Override
-    public void addDriver(DriverDTO driverDTO) throws SQLException {
+    public void addDriver(DriverRequestDto driverDTO) throws SQLException {
         driverDAO.createDriver(Mapper.toDriver(driverDTO));
     }
 
     @Override
-    public void updateDriver(DriverDTO driverDTO, int id) throws SQLException, NotFoundException {
+    public void updateDriver(DriverRequestDto driverDTO, int id) throws SQLException, NotFoundException {
         Driver driver = Mapper.toDriver(driverDTO);
         driver.setId(id);
         driverDAO.updateDriver(driver);
     }
 
     @Override
-    public DriverDTO getDriverById(int driverId) throws SQLException {
-        return Mapper.toDriverDto(driverDAO.getDriverById(driverId));
+    public DriverResponseDto getDriverById(int driverId) throws SQLException {
+        Driver driver = driverDAO.getDriverById(driverId);
+        return Mapper.toDriverResponseDto(driver);
     }
 
     @Override
-    public List<DriverDTO> getAllDrivers() {
+    public List<DriverResponseDto> getAllDrivers() throws SQLException {
         List<Driver> drivers = driverDAO.getAllDrivers();
-        return drivers.stream().map(Mapper::toDriverDto).toList();
+        return drivers.stream().map(Mapper::toDriverResponseDto).toList();
     }
 
     @Override
-    public void deleteDriver(int driverId) throws SQLException {
+    public void deleteDriver(int driverId) throws SQLException, NotFoundException {
         driverDAO.deleteDriver(driverId);
+    }
+
+    @Override
+    public void setActiveStatus(int driverId, boolean isActive) throws SQLException {
+        driverDAO.setActiveStatus(driverId, isActive);
+    }
+
+    @Override
+    public void uploadImage(int driverId, String image) throws SQLException {
+        driverDAO.uploadImage(driverId, image);
+    }
+
+    @Override
+    public void changeStatus(int driverId, String status) throws SQLException {
+        driverDAO.changeStatus(driverId, status);
     }
 }

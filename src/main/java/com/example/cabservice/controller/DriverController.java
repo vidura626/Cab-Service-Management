@@ -1,6 +1,7 @@
 package com.example.cabservice.controller;
 
-import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.dto.request.DriverRequestDto;
+import com.example.cabservice.dto.response.DriverResponseDto;
 import com.example.cabservice.exceptions.AlreadyAvailableException;
 import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.factory.DriverFactory;
@@ -32,7 +33,7 @@ public class DriverController extends HttpServlet {
     // POST Method (Create new driver)
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
-        DriverDTO driverDTO = JsonUtil.parseDriverJson(json);
+        DriverRequestDto driverDTO = JsonUtil.parseDriverRequestJson(json);
         try {
             driverService.addDriver(driverDTO);
             response.setStatus(HttpServletResponse.SC_CREATED);
@@ -49,7 +50,7 @@ public class DriverController extends HttpServlet {
     // PUT Method (Update existing driver)
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
-        DriverDTO driverDTO = JsonUtil.parseDriverJson(json);
+        DriverRequestDto driverDTO = JsonUtil.parseDriverRequestJson(json);
 
         int id = Integer.parseInt(request.getParameter("id"));
 
@@ -74,9 +75,9 @@ public class DriverController extends HttpServlet {
             // Get driver by ID
             try {
                 int driverId = Integer.parseInt(driverIdParam);
-                DriverDTO driver = driverService.getDriverById(driverId);
+                DriverResponseDto driver = driverService.getDriverById(driverId);
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write(JsonUtil.convertDriverToJson(driver)); // Assuming you have a utility to convert driver DTO to JSON
+                response.getWriter().write(JsonUtil.convertDriverResponseToJson(driver)); // Assuming you have a utility to convert driver DTO to JSON
             } catch (NotFoundException ex) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write("{\"error\":\""+ ex.getMessage() +"\"}");
@@ -86,9 +87,15 @@ public class DriverController extends HttpServlet {
             }
         } else {
             // Get all drivers
-            List<DriverDTO> drivers = driverService.getAllDrivers();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(JsonUtil.convertDriversToJson(drivers)); // Assuming you have a utility to convert list of driver DTOs to JSON
+            List<DriverResponseDto> drivers = null;
+            try {
+                drivers = driverService.getAllDrivers();
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(JsonUtil.convertDriversToJson(drivers));
+            } catch (SQLException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("{\"error\":\""+ e.getMessage() +"\"}");
+            }
         }
     }
 
