@@ -1,10 +1,14 @@
 package com.example.cabservice.util;
 import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.dto.VehicleDTO;
 import com.example.cabservice.dto.VehicleTypeDTO;
+import com.example.cabservice.enums.FuelTypes;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class JsonUtil {
 
@@ -22,18 +26,40 @@ public class JsonUtil {
 
     // Parse the JSON string to VehicleTypeDTO
     public static VehicleTypeDTO parseVehicleTypeJson(String json) {
-        VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
-        vehicleTypeDTO.setDescription(extractJsonValue(json, "description"));
-        return vehicleTypeDTO;
+        return new VehicleTypeDTO.Builder()
+                .setDescription(extractJsonValue(json, "description"))
+                .build();
     }
 
     // Parse the JSON string to DriverDTO
     public static DriverDTO parseDriverJson(String json) {
-        DriverDTO driverDTO = new DriverDTO();
-        driverDTO.setName(extractJsonValue(json, "name"));
-        driverDTO.setAddress(extractJsonValue(json, "address"));
-        driverDTO.setDob(extractJsonValue(json, "dob"));
-        return driverDTO;
+        return new DriverDTO.Builder()
+                .setName(extractJsonValue(json, "name"))
+                .setAddress(extractJsonValue(json, "address"))
+                .setDob(extractJsonValue(json, "dob"))
+                .build();
+    }
+
+    // Parse the JSON string to VehicleDTO
+    public static VehicleDTO parseVehicleJson(String json) {
+        Long id = json.contains("\"id\"") ? Long.parseLong(extractJsonValue(json, "id")) : null;
+        String make = extractJsonValue(json, "make");
+        String model = extractJsonValue(json, "model");
+        int year = Integer.parseInt(extractJsonValue(json, "year"));
+        String licensePlate = extractJsonValue(json, "licensePlate");
+        FuelTypes fuelType = FuelTypes.valueOf(extractJsonValue(json, "fuelType"));
+        String status = extractJsonValue(json, "status");
+        String owner = extractJsonValue(json, "owner");
+        List<String> vehicleImages = Arrays.asList(extractJsonValue(json, "vehicleImages").split(","));
+
+        return new VehicleDTO.Builder(make,model, year)
+                .setId(id)
+                .setFuelType(fuelType)
+                .setOwner(owner)
+                .setStatus(status)
+                .setVehicleImages(vehicleImages)
+                .setLicensePlate(licensePlate)
+                .build();
     }
 
     // Helper method to extract value from JSON string

@@ -3,12 +3,27 @@ package com.example.cabservice.dto;
 public class VehicleTypeDTO {
     private String description;
 
-    // Getter and Setter
+    private VehicleTypeDTO(Builder builder) {
+        this.description = builder.description;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public static class Builder {
+        private String description;
+
+        public Builder() {
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public VehicleTypeDTO build() {
+            return new VehicleTypeDTO(this);
+        }
     }
 }
