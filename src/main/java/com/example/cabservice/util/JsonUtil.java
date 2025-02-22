@@ -1,5 +1,6 @@
 package com.example.cabservice.util;
 import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.dto.VehicleTypeDTO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.BufferedReader;
@@ -17,6 +18,13 @@ public class JsonUtil {
             }
         }
         return stringBuilder.toString();
+    }
+
+    // Parse the JSON string to VehicleTypeDTO
+    public static VehicleTypeDTO parseVehicleTypeJson(String json) {
+        VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
+        vehicleTypeDTO.setDescription(extractJsonValue(json, "description"));
+        return vehicleTypeDTO;
     }
 
     // Parse the JSON string to DriverDTO
