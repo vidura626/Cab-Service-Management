@@ -1,9 +1,13 @@
 package com.example.cabservice.service;
 
-import com.example.cabservice.dto.VehicleTypeDTO;
+import com.example.cabservice.dto.VehicleDTO;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface VehicleServiceInterface {
-    void addVehicle(VehicleTypeDTO vehicleTypeDTO) throws Exception;
-    void updateVehicleType(VehicleTypeDTO vehicleTypeDTO, int id) throws Exception;
-    // Add additional methods for Delete and Read if necessary
+    void addVehicle(VehicleDTO vehicleDTO) throws SQLException;
+    void updateVehicle(VehicleDTO vehicleDTO, int id) throws SQLException;
+    VehicleDTO getVehicleById(int id) throws SQLException;
+    List<VehicleDTO> getAllVehicles() throws SQLException;
+    void deleteVehicle(int id) throws SQLException;
 }
