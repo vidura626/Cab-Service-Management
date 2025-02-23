@@ -42,23 +42,14 @@ public class JsonUtil {
 
     // Parse the JSON string to VehicleDTO
     public static VehicleDTO parseVehicleJson(String json) {
-        Long id = json.contains("\"id\"") ? Long.parseLong(extractJsonValue(json, "id")) : null;
-        String make = extractJsonValue(json, "make");
-        String model = extractJsonValue(json, "model");
-        int year = Integer.parseInt(extractJsonValue(json, "year"));
-        String licensePlate = extractJsonValue(json, "licensePlate");
-        FuelTypes fuelType = FuelTypes.valueOf(extractJsonValue(json, "fuelType"));
-        String status = extractJsonValue(json, "status");
-        String owner = extractJsonValue(json, "owner");
-        List<String> vehicleImages = Arrays.asList(extractJsonValue(json, "vehicleImages").split(","));
-
-        return new VehicleDTO.Builder(make,model, year)
-                .setId(id)
-                .setFuelType(fuelType)
-                .setOwner(owner)
-                .setStatus(status)
-                .setVehicleImages(vehicleImages)
-                .setLicensePlate(licensePlate)
+        return new VehicleDTO.Builder()
+                .setMake(extractJsonValue(json, "make"))
+                .setModel(extractJsonValue(json, "model"))
+                .setYear(Integer.parseInt(extractJsonValue(json, "year")))
+                .setLicensePlate(extractJsonValue(json, "licensePlate"))
+                .setFuelType(extractJsonValue(json, "fuelType"))
+                .setStatus(extractJsonValue(json, "status"))
+                .setVehicleTypeId(Integer.parseInt(extractJsonValue(json, "vehicle_type_id")))
                 .build();
     }
 
