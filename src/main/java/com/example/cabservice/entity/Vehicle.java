@@ -1,100 +1,103 @@
 package com.example.cabservice.entity;
 
-import com.example.cabservice.dto.VehicleTypeDTO;
-import com.example.cabservice.enums.FuelTypes;
-
-import java.util.List;
+import com.example.cabservice.enums.VehicleStatus;
 
 public class Vehicle {
-    private Long id;
+    private int id;
     private String make;
     private String model;
     private int year;
-    private VehicleTypeDTO vehicleType;
     private String licensePlate;
-    private FuelTypes fuelType;
-    private String status;
-    private String owner;
-    private List<String> vehicleImages;
+    private String fuelType;
+    private VehicleStatus status;
+    private int vehicleTypeId;
+    private String vehicleTypeDescription;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public void setVehicleTypeId(int vehicleTypeId) {
+        this.vehicleTypeId = vehicleTypeId;
+    }
+
+    public void setVehicleTypeDescription(String vehicleTypeDescription) {
+        this.vehicleTypeDescription = vehicleTypeDescription;
+    }
 
     private Vehicle(Builder builder) {
-        this.id = builder.vehicleId;
+        this.id = builder.id;
         this.make = builder.make;
         this.model = builder.model;
         this.year = builder.year;
-        this.vehicleType = builder.vehicleType;
         this.licensePlate = builder.licensePlate;
         this.fuelType = builder.fuelType;
         this.status = builder.status;
-        this.owner = builder.owner;
-        this.vehicleImages = builder.vehicleImages;
+        this.vehicleTypeId = builder.vehicleTypeId;
+        this.vehicleTypeDescription = builder.vehicleTypeDescription;
     }
 
-    public Long getId() {
-        return id;
-    }
+    // Getters and Setters
+    public int getId() { return id; }
+    public String getMake() { return make; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+    public String getLicensePlate() { return licensePlate; }
+    public String getFuelType() { return fuelType; }
+    public VehicleStatus getStatus() { return status; }
+    public int getVehicleTypeId() { return vehicleTypeId; }
+    public String getVehicleTypeDescription() { return vehicleTypeDescription; }
 
-    public String getMake() {
-        return make;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public VehicleTypeDTO getVehicleType() {
-        return vehicleType;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public FuelTypes getFuelType() {
-        return fuelType;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public List<String> getVehicleImages() {
-        return vehicleImages;
-    }
+    public void setStatus(VehicleStatus status) { this.status = status; }
 
     public static class Builder {
-        private Long vehicleId;
+        private int id;
         private String make;
         private String model;
         private int year;
-        private VehicleTypeDTO vehicleType;
         private String licensePlate;
-        private FuelTypes fuelType;
-        private String status;
-        private String owner;
-        private List<String> vehicleImages;
+        private String fuelType;
+        private VehicleStatus status;  // Changed to VehicleStatus enum
+        private int vehicleTypeId;
+        private String vehicleTypeDescription;
 
-        public Builder(String make, String model, int year) {
-            this.make = make;
-            this.model = model;
-            this.year = year;
-        }
-
-        public Builder setVehicleId(Long vehicleId) {
-            this.vehicleId = vehicleId;
+        public Builder setId(int id) {
+            this.id = id;
             return this;
         }
 
-        public Builder setVehicleType(VehicleTypeDTO vehicleType) {
-            this.vehicleType = vehicleType;
+        public Builder setMake(String make) {
+            this.make = make;
+            return this;
+        }
+
+        public Builder setModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public Builder setYear(int year) {
+            this.year = year;
             return this;
         }
 
@@ -103,23 +106,23 @@ public class Vehicle {
             return this;
         }
 
-        public Builder setFuelType(FuelTypes fuelType) {
+        public Builder setFuelType(String fuelType) {
             this.fuelType = fuelType;
             return this;
         }
 
-        public Builder setStatus(String status) {
+        public Builder setStatus(VehicleStatus status) {
             this.status = status;
             return this;
         }
 
-        public Builder setOwner(String owner) {
-            this.owner = owner;
+        public Builder setVehicleTypeId(int vehicleTypeId) {
+            this.vehicleTypeId = vehicleTypeId;
             return this;
         }
 
-        public Builder setVehicleImages(List<String> vehicleImages) {
-            this.vehicleImages = vehicleImages;
+        public Builder setVehicleTypeDescription(String vehicleTypeDescription) {
+            this.vehicleTypeDescription = vehicleTypeDescription;
             return this;
         }
 
