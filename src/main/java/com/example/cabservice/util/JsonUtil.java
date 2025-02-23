@@ -1,10 +1,14 @@
 package com.example.cabservice.util;
 import com.example.cabservice.dto.DriverDTO;
+import com.example.cabservice.dto.VehicleDTO;
 import com.example.cabservice.dto.VehicleTypeDTO;
+import com.example.cabservice.enums.FuelTypes;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class JsonUtil {
 
@@ -22,18 +26,31 @@ public class JsonUtil {
 
     // Parse the JSON string to VehicleTypeDTO
     public static VehicleTypeDTO parseVehicleTypeJson(String json) {
-        VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
-        vehicleTypeDTO.setDescription(extractJsonValue(json, "description"));
-        return vehicleTypeDTO;
+        return new VehicleTypeDTO.Builder()
+                .setDescription(extractJsonValue(json, "description"))
+                .build();
     }
 
     // Parse the JSON string to DriverDTO
     public static DriverDTO parseDriverJson(String json) {
-        DriverDTO driverDTO = new DriverDTO();
-        driverDTO.setName(extractJsonValue(json, "name"));
-        driverDTO.setAddress(extractJsonValue(json, "address"));
-        driverDTO.setDob(extractJsonValue(json, "dob"));
-        return driverDTO;
+        return new DriverDTO.Builder()
+                .setName(extractJsonValue(json, "name"))
+                .setAddress(extractJsonValue(json, "address"))
+                .setDob(extractJsonValue(json, "dob"))
+                .build();
+    }
+
+    // Parse the JSON string to VehicleDTO
+    public static VehicleDTO parseVehicleJson(String json) {
+        return new VehicleDTO.Builder()
+                .setMake(extractJsonValue(json, "make"))
+                .setModel(extractJsonValue(json, "model"))
+                .setYear(Integer.parseInt(extractJsonValue(json, "year")))
+                .setLicensePlate(extractJsonValue(json, "licensePlate"))
+                .setFuelType(extractJsonValue(json, "fuelType"))
+                .setStatus(extractJsonValue(json, "status"))
+                .setVehicleTypeId(Integer.parseInt(extractJsonValue(json, "vehicle_type_id")))
+                .build();
     }
 
     // Helper method to extract value from JSON string
