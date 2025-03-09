@@ -1,25 +1,30 @@
 package com.example.cabservice.config;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseConnectionManager {
     private static DatabaseConnectionManager instance;
     private Connection connection;
 
-    private DatabaseConnectionManager()  {
-        System.out.println("Logger: DatabaseConnectionManager.Constructor - Start");
+    private static final String URL = "jdbc:mysql://localhost:3306/cab_service?createDatabaseIfNotExist=true&serverTimezone=UTC";
+    private static final String USER = "root";  // Update with your MySQL username
+    private static final String PASSWORD = "1234"; // Update with your MySQL password
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+
+    private DatabaseConnectionManager() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cab_service?createDatabaseIfNotExist=true", "root", "1234");
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Logger: DatabaseConnectionManager.Constructor - Error occured while connecting to database:" + e.getLocalizedMessage());
-            e.printStackTrace();
+            Class.forName(DRIVER); // Ensure MySQL JDBC Driver is loaded
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("✅ Connected to MySQL Database Successfully!");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found!", e);
         }
-        System.out.println("Logger: DatabaseConnectionManager.Constructor - End");
     }
 
-    public static synchronized DatabaseConnectionManager getInstance() {
-        if (instance == null) {
+    public static synchronized DatabaseConnectionManager getInstance() throws SQLException {
+        if (instance == null || instance.getConnection().isClosed()) {
             instance = new DatabaseConnectionManager();
         }
         return instance;
@@ -29,9 +34,14 @@ public class DatabaseConnectionManager {
         return connection;
     }
 
-    public void closeConnection() throws SQLException {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("✅ Database connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error closing database connection: " + e.getMessage());
         }
     }
 }

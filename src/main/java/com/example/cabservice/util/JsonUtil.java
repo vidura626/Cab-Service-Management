@@ -1,5 +1,4 @@
 package com.example.cabservice.util;
-
 import com.example.cabservice.dto.request.DriverRequestDto;
 import com.example.cabservice.dto.response.DriverResponseDto;
 import com.example.cabservice.util.enums.DriverStatus;
@@ -11,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
+
 
 public class JsonUtil {
 
@@ -26,31 +27,34 @@ public class JsonUtil {
         return stringBuilder.toString();
     }
 
+    // Parse the JSON string to VehicleTypeDTO
+    public static VehicleTypeDTO parseVehicleTypeJson(String json) {
+        return new VehicleTypeDTO.Builder()
+                .setDescription(extractJsonValue(json, "description"))
+                .build();
+    }
+
     // Parse the JSON string to DriverDTO
-    public static DriverRequestDto parseDriverRequestJson(String json) {
-        DriverRequestDto driverDTO = new DriverRequestDto();
 
-        driverDTO.setName(extractJsonValue(json, "name"));
-        driverDTO.setNic(extractJsonValue(json, "nic"));
-        driverDTO.setAddress(extractJsonValue(json, "address"));
-        driverDTO.setDob(extractJsonValue(json, "dob"));
-        driverDTO.setLicence(extractJsonValue(json, "licence"));
+    public static DriverDTO parseDriverJson(String json) {
+        return new DriverDTO.Builder()
+                .setName(extractJsonValue(json, "name"))
+                .setAddress(extractJsonValue(json, "address"))
+                .setDob(extractJsonValue(json, "dob"))
+                .build();
+    }
 
-        // Handle enum value for status (Available or Busy)
-        String status = extractJsonValue(json, "status");
-        if (status != null && !status.isEmpty()) {
-            driverDTO.setStatus(DriverStatus.fromString(status));
-        }
-
-        driverDTO.setImage(extractJsonValue(json, "image"));
-
-        // Parse isActive as boolean
-        String isActiveStr = extractJsonValue(json, "isActive");
-        if (isActiveStr != null && !isActiveStr.isEmpty()) {
-            driverDTO.setActive(Boolean.parseBoolean(isActiveStr));
-        }
-
-        return driverDTO;
+    // Parse the JSON string to VehicleDTO
+    public static VehicleDTO parseVehicleJson(String json) {
+        return new VehicleDTO.Builder()
+                .setMake(extractJsonValue(json, "make"))
+                .setModel(extractJsonValue(json, "model"))
+                .setYear(Integer.parseInt(extractJsonValue(json, "year")))
+                .setLicensePlate(extractJsonValue(json, "licensePlate"))
+                .setFuelType(extractJsonValue(json, "fuelType"))
+                .setStatus(extractJsonValue(json, "status"))
+                .setVehicleTypeId(Integer.parseInt(extractJsonValue(json, "vehicle_type_id")))
+                .build();
     }
 
     // Helper method to extract value from JSON string
