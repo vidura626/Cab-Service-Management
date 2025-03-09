@@ -26,7 +26,12 @@ public class VehicleDAOInterfaceImpl implements VehicleDAOInterface {
             stmt.setString(5, vehicle.getFuelType());
             stmt.setString(6, vehicle.getStatus().name());
             stmt.setInt(7, vehicle.getVehicleTypeId());
-            return stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            try (ResultSet resultSet = stmt.getGeneratedKeys()) {
+                if (resultSet.next()) return resultSet.getInt(1);
+                else return -1;
+            }
         }
     }
 
