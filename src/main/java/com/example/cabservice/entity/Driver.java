@@ -5,7 +5,7 @@ import com.example.cabservice.util.enums.DriverStatus;
 
 import java.sql.Date;
 
-public class Driver {
+public class Driver extends BaseEntity{
     private int id;
     private String name;
     private String nic;
@@ -15,6 +15,10 @@ public class Driver {
     private DriverStatus status;  // Enum: Available, Busy
     private String image;
     private boolean isActive;
+
+    public Driver(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
+        super(createdBy, updatedBy, createdDate, updatedDate);
+    }
 
     // Getters and Setters
     public int getId() {
