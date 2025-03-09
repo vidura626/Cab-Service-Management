@@ -4,6 +4,7 @@ package com.example.cabservice.entity;
 import com.example.cabservice.util.enums.DriverStatus;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Driver extends BaseEntity{
     private int id;
@@ -16,7 +17,7 @@ public class Driver extends BaseEntity{
     private String image;
     private boolean isActive;
 
-    public Driver(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
+    public Driver(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdBy, updatedBy, createdDate, updatedDate);
     }
 

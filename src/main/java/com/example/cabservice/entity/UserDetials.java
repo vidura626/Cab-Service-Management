@@ -1,6 +1,7 @@
 package com.example.cabservice.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class UserDetials extends BaseEntity{
     private Long id;
@@ -8,7 +9,7 @@ public class UserDetials extends BaseEntity{
     private String password;
     private boolean isActive;
     private String role;
-    public UserDetials(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
+    public UserDetials(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdBy, updatedBy, createdDate, updatedDate);
     }
 }

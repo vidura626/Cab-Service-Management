@@ -1,6 +1,9 @@
 package com.example.cabservice.entity;
 
+import com.example.cabservice.enums.BookingStatus;
+
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Booking extends BaseEntity {
     private Long id;
@@ -12,7 +15,8 @@ public class Booking extends BaseEntity {
     private Double dropLocationLat;
     private Double dropLocationLng;
     private Double distance;
-    public Booking(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
+    private BookingStatus status;
+    public Booking(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdBy, updatedBy, createdDate, updatedDate);
     }
 }

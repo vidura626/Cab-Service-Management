@@ -3,6 +3,7 @@ package com.example.cabservice.entity;
 import com.example.cabservice.enums.VehicleStatus;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Vehicle extends BaseEntity {
     private int id;
@@ -17,7 +18,7 @@ public class Vehicle extends BaseEntity {
 
     private String image;
 
-    public Vehicle(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
+    public Vehicle(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdBy, updatedBy, createdDate, updatedDate);
     }
 }
