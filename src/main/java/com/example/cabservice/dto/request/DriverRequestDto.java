@@ -1,30 +1,19 @@
-package com.example.cabservice.entity;
+package com.example.cabservice.dto.request;
 
 
 import com.example.cabservice.util.enums.DriverStatus;
 
-import java.sql.Date;
-
-public class Driver {
-    private int id;
+public class DriverRequestDto {
     private String name;
     private String nic;
     private String address;
-    private Date dob;  // java.sql.Date for database operations
+    private String dob;  // String for the request, in the format "yyyy/MM/dd"
     private String licence;
     private DriverStatus status;  // Enum: Available, Busy
     private String image;
     private boolean isActive;
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -49,11 +38,11 @@ public class Driver {
         this.address = address;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 

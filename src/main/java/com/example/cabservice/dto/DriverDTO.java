@@ -1,6 +1,7 @@
 package com.example.cabservice.dto;
 
 public class DriverDTO {
+
     private String name;
     private String address;
     private String dob;
@@ -67,4 +68,3 @@ public class DriverDTO {
         }
     }
 }
-

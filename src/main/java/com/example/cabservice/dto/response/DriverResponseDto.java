@@ -1,16 +1,15 @@
-package com.example.cabservice.entity;
-
+package com.example.cabservice.dto.response;
 
 import com.example.cabservice.util.enums.DriverStatus;
 
-import java.sql.Date;
+import java.util.Date;
 
-public class Driver {
+public class DriverResponseDto {
     private int id;
     private String name;
     private String nic;
     private String address;
-    private Date dob;  // java.sql.Date for database operations
+    private Date dob;  // java.util.Date for the response
     private String licence;
     private DriverStatus status;  // Enum: Available, Busy
     private String image;
