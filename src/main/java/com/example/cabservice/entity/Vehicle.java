@@ -15,6 +15,8 @@ public class Vehicle extends BaseEntity {
     private int vehicleTypeId;
     private String vehicleTypeDescription;
 
+    private String image;
+
     public Vehicle(String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
         super(createdBy, updatedBy, createdDate, updatedDate);
     }
