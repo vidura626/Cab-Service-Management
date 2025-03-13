@@ -1,17 +1,12 @@
 package com.example.cabservice.controller;
 
-import com.example.cabservice.dto.request.VehicleTypeRequestDto;
 import com.example.cabservice.dto.response.VehicleTypeResponseDto;
-import com.example.cabservice.dto.request.DriverRequestDto;
-import com.example.cabservice.dto.response.DriverResponseDto;
-import com.example.cabservice.entity.Driver;
-import com.example.cabservice.entity.VehicleType;
 import com.example.cabservice.enums.JsonDtoMappingTypes;
 import com.example.cabservice.factory.JsonDtoMappingFactory;
 import com.example.cabservice.factory.VehicleTypeFactory;
 import com.example.cabservice.service.VehicleTypeServiceInterface;
 import com.example.cabservice.util.JsonDtoMappingInterface;
-import com.example.cabservice.util.JsonUtil;
+import com.example.cabservice.util.static_utils.JsonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -66,7 +61,7 @@ public class VehicleTypeController extends HttpServlet {
                 VehicleTypeResponseDto vehicleType = vehicleTypeService.getVehicleTypeById(id);
                 if (vehicleType != null) {
                     response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-                    response.getWriter().write(vehicleTypeMapping.toJson(vehicleType));
+                    response.getWriter().write(vehicleTypeMapping.resultSetToResponseDto(vehicleType));
                     LOGGER.info("Successfully fetched vehicle type with ID: " + id);
                 } else {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404 Not Found

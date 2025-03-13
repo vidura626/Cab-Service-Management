@@ -2,7 +2,7 @@ package com.example.cabservice.controller;
 
 import com.example.cabservice.dto.response.VehicleTypeResponseDto;
 import com.example.cabservice.service.VehicleTypeServiceInterface;
-import com.example.cabservice.util.JsonUtil;
+import com.example.cabservice.util.static_utils.JsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ public class VehicleTypeControllerTest {
     public void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
         vehicleTypeController = new VehicleTypeController();
-        vehicleTypeController.vehicleTypeService = vehicleTypeService;  // Inject mock service
+//        vehicleTypeController.vehicleTypeService = vehicleTypeService;  // Inject mock service
 
         // Mock the HttpServletResponse's getWriter() method to return the mock PrintWriter
         when(response.getWriter()).thenReturn(writer);

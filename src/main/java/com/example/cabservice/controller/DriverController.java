@@ -6,7 +6,7 @@ import com.example.cabservice.exceptions.AlreadyAvailableException;
 import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.factory.DriverFactory;
 import com.example.cabservice.service.DriverServiceInterface;
-import com.example.cabservice.util.JsonUtil;
+import com.example.cabservice.util.static_utils.JsonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
