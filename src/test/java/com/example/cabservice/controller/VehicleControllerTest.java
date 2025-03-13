@@ -1,9 +1,8 @@
 package com.example.cabservice.controller;
 
-import com.example.cabservice.dto.VehicleDTO;
+import com.example.cabservice.dto.request.VehicleRequestDto;
 import com.example.cabservice.service.VehicleServiceInterface;
 import com.example.cabservice.exceptions.AlreadyAvailableException;
-import com.example.cabservice.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VehicleControllerTest {
@@ -42,7 +39,7 @@ public class VehicleControllerTest {
         String json = "{\"make\":\"Toyota\",\"model\":\"Corolla\",\"year\":2020,\"licensePlate\":\"ABC1234\",\"fuelType\":\"Petrol\",\"status\":\"Available\",\"vehicle_type_id\":1}";
         when(request.getReader()).thenReturn(new java.io.BufferedReader(new java.io.StringReader(json)));
 
-        VehicleDTO vehicleDTO = new VehicleDTO.Builder()
+        VehicleRequestDto vehicleRequestDto = new VehicleRequestDto.Builder()
                 .setMake("Toyota")
                 .setModel("Corolla")
                 .setYear(2020)
@@ -52,7 +49,7 @@ public class VehicleControllerTest {
                 .setVehicleTypeId(1)
                 .build();
 
-        doNothing().when(vehicleService).addVehicle(vehicleDTO);
+        doNothing().when(vehicleService).addVehicle(vehicleRequestDto);
 
         // Act
         vehicleController.doPost(request, response);
@@ -68,7 +65,7 @@ public class VehicleControllerTest {
         String json = "{\"make\":\"Toyota\",\"model\":\"Corolla\",\"year\":2020,\"licensePlate\":\"ABC1234\",\"fuelType\":\"Petrol\",\"status\":\"Available\",\"vehicle_type_id\":1}";
         when(request.getReader()).thenReturn(new java.io.BufferedReader(new java.io.StringReader(json)));
 
-        VehicleDTO vehicleDTO = new VehicleDTO.Builder()
+        VehicleRequestDto vehicleRequestDto = new VehicleRequestDto.Builder()
                 .setMake("Toyota")
                 .setModel("Corolla")
                 .setYear(2020)
@@ -78,7 +75,7 @@ public class VehicleControllerTest {
                 .setVehicleTypeId(1)
                 .build();
 
-        doThrow(new AlreadyAvailableException("Vehicle with this license plate already exists")).when(vehicleService).addVehicle(vehicleDTO);
+        doThrow(new AlreadyAvailableException("Vehicle with this license plate already exists")).when(vehicleService).addVehicle(vehicleRequestDto);
 
         // Act
         vehicleController.doPost(request, response);

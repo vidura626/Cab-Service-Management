@@ -28,7 +28,7 @@ public class DriverDAOImpl extends BaseDAO<Driver> implements DriverDAO {
 
     @Override
     public Driver mapResultSetToEntity(ResultSet rs) throws SQLException {
-        return mapping.resultSetToResponseDto(rs);
+        return mapping.responseDtoToJsonString(rs);
     }
 
     @Override

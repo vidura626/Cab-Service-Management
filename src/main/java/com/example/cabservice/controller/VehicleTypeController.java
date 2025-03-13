@@ -61,7 +61,7 @@ public class VehicleTypeController extends HttpServlet {
                 VehicleTypeResponseDto vehicleType = vehicleTypeService.getVehicleTypeById(id);
                 if (vehicleType != null) {
                     response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-                    response.getWriter().write(vehicleTypeMapping.resultSetToResponseDto(vehicleType));
+                    response.getWriter().write(vehicleTypeMapping.responseDtoToJsonString(vehicleType));
                     LOGGER.info("Successfully fetched vehicle type with ID: " + id);
                 } else {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404 Not Found

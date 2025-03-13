@@ -1,10 +1,10 @@
 package com.example.cabservice.service;
 
-import com.example.cabservice.dto.VehicleDTO;
+import com.example.cabservice.dto.request.VehicleRequestDto;
 
 public interface VehicleServiceInterface {
-    void addVehicle(VehicleDTO vehicleDTO) throws Exception;
-    void updateVehicle(VehicleDTO vehicleDTO, int id) throws Exception;
+    void addVehicle(VehicleRequestDto vehicleRequestDto) throws Exception;
+    void updateVehicle(VehicleRequestDto vehicleRequestDto, int id) throws Exception;
     void deleteVehicle(int id) throws Exception;
-    VehicleDTO getVehicleById(int id) throws Exception;
+    VehicleRequestDto getVehicleById(int id) throws Exception;
 }

@@ -1,6 +1,6 @@
 package com.example.cabservice.controller;
 
-import com.example.cabservice.dto.VehicleDTO;
+import com.example.cabservice.dto.request.VehicleRequestDto;
 import com.example.cabservice.exceptions.AlreadyAvailableException;
 import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.factory.VehicleFactory;
@@ -30,9 +30,9 @@ public class VehicleController extends HttpServlet {
     // POST method for creating vehicle
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
-        VehicleDTO vehicleDTO = JsonUtil.parseVehicleJson(json);
+        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
         try {
-            vehicleService.addVehicle(vehicleDTO);
+            vehicleService.addVehicle(vehicleRequestDto);
             response.setStatus(HttpServletResponse.SC_CREATED);
             response.getWriter().write("{\"message\":\"Vehicle created successfully\"}");
         } catch (AlreadyAvailableException e) {
@@ -47,11 +47,11 @@ public class VehicleController extends HttpServlet {
     // PUT method for updating vehicle
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
-        VehicleDTO vehicleDTO = JsonUtil.parseVehicleJson(json);
+        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
 
         int id = Integer.parseInt(request.getParameter("id"));
         try {
-            vehicleService.updateVehicle(vehicleDTO, id);
+            vehicleService.updateVehicle(vehicleRequestDto, id);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write("{\"message\":\"Vehicle updated successfully\"}");
         } catch (NotFoundException e) {

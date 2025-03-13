@@ -86,7 +86,7 @@ public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestD
     }
 
     @Override
-    public String resultSetToResponseDto(DriverResponseDto request) {
+    public String responseDtoToJsonString(DriverResponseDto request) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
 
@@ -105,7 +105,7 @@ public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestD
     }
 
     @Override
-    public Driver resultSetToResponseDto(ResultSet rs) throws SQLException {
+    public Driver responseDtoToJsonString(ResultSet rs) throws SQLException {
         return new Driver.Builder()
                 .name(rs.getString("name"))
                 .nic(rs.getString("nic"))

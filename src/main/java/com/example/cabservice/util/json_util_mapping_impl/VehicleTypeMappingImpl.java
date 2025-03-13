@@ -45,7 +45,7 @@ public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTy
     }
 
     @Override
-    public String resultSetToResponseDto(VehicleTypeResponseDto request) {
+    public String responseDtoToJsonString(VehicleTypeResponseDto request) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
 
@@ -57,7 +57,7 @@ public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTy
     }
 
     @Override
-    public VehicleType resultSetToResponseDto(ResultSet resultSet) throws SQLException {
+    public VehicleType responseDtoToJsonString(ResultSet resultSet) throws SQLException {
         return null;
     }
 
