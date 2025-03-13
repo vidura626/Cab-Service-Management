@@ -35,7 +35,7 @@ public class VehicleType extends BaseEntity {
         private LocalDateTime createdDate;
         private LocalDateTime updatedDate;
 
-        public Builder setId(Long id) {
+        public Builder id(Long id) {
             this.id = id;
             return this;
         }

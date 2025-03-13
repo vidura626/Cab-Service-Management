@@ -2,13 +2,13 @@ package com.example.cabservice.util.json_util_mapping_impl;
 
 import com.example.cabservice.dto.request.VehicleTypeRequestDto;
 import com.example.cabservice.dto.response.VehicleTypeResponseDto;
-import com.example.cabservice.entity.Driver;
 import com.example.cabservice.entity.VehicleType;
-import com.example.cabservice.enums.DriverStatus;
-import com.example.cabservice.util.DateUtil;
 import com.example.cabservice.util.JsonDtoMappingInterface;
 
-import static com.example.cabservice.util.JsonUtil.extractJsonValue;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static com.example.cabservice.util.static_utils.JsonUtil.extractJsonValue;
 
 public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTypeRequestDto, VehicleType, VehicleTypeResponseDto> {
     @Override
@@ -27,6 +27,14 @@ public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTy
                 .build();
     }
 
+    @Override
+    public VehicleType toEntity(VehicleTypeRequestDto request, Long id) {
+        return new VehicleType.Builder()
+                .id(id)
+                .description(request.getDescription())
+                .build();
+    }
+
 
     @Override
     public VehicleTypeResponseDto toResponseDto(VehicleType request) {
@@ -37,7 +45,7 @@ public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTy
     }
 
     @Override
-    public String toJson(VehicleTypeResponseDto request) {
+    public String resultSetToResponseDto(VehicleTypeResponseDto request) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
 
@@ -46,6 +54,11 @@ public class VehicleTypeMappingImpl implements JsonDtoMappingInterface<VehicleTy
 
         jsonBuilder.append("}");
         return jsonBuilder.toString();
+    }
+
+    @Override
+    public VehicleType resultSetToResponseDto(ResultSet resultSet) throws SQLException {
+        return null;
     }
 
 
