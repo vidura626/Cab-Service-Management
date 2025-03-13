@@ -4,12 +4,13 @@ import com.example.cabservice.dto.request.DriverRequestDto;
 import com.example.cabservice.dto.response.DriverResponseDto;
 import com.example.cabservice.entity.Driver;
 import com.example.cabservice.enums.DriverStatus;
-import com.example.cabservice.util.DateUtil;
+import com.example.cabservice.util.static_utils.DateUtil;
 import com.example.cabservice.util.JsonDtoMappingInterface;
 
-import java.util.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import static com.example.cabservice.util.JsonUtil.extractJsonValue;
+import static com.example.cabservice.util.static_utils.JsonUtil.extractJsonValue;
 
 public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestDto, Driver, DriverResponseDto> {
     @Override
@@ -51,6 +52,23 @@ public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestD
                 .build();
     }
 
+    @Override
+    public Driver toEntity(DriverRequestDto request, Long id) {
+        DriverStatus status = DriverStatus.valueOf(request.getStatus());
+        java.sql.Date dob = DateUtil.convertStringToSqlDate(request.getDob());
+        return new Driver.Builder()
+                .id(Math.toIntExact(id))
+                .name(request.getName())
+                .nic(request.getNic())
+                .address(request.getAddress())
+                .dob(dob)
+                .licence(request.getLicence())
+                .status(status)
+                .image(request.getImage())
+                .isActive(request.isActive())
+                .build();
+    }
+
 
     @Override
     public DriverResponseDto toResponseDto(Driver request) {
@@ -68,7 +86,7 @@ public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestD
     }
 
     @Override
-    public String toJson(DriverResponseDto request) {
+    public String resultSetToResponseDto(DriverResponseDto request) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
 
@@ -84,6 +102,24 @@ public class DriverMappingImpl implements JsonDtoMappingInterface<DriverRequestD
 
         jsonBuilder.append("}");
         return jsonBuilder.toString();
+    }
+
+    @Override
+    public Driver resultSetToResponseDto(ResultSet rs) throws SQLException {
+        return new Driver.Builder()
+                .name(rs.getString("name"))
+                .nic(rs.getString("nic"))
+                .address(rs.getString("address"))
+                .dob(rs.getDate("dob"))
+                .licence(rs.getString("licence"))
+                .status(DriverStatus.valueOf(rs.getString("driver_status")))
+                .image(rs.getString("image"))
+                .isActive(rs.getBoolean("isActive"))
+                .createdBy(rs.getString("created_by"))
+                .updatedBy(rs.getString("updated_by"))
+                .createdDate(rs.getTimestamp("created_at").toLocalDateTime())
+                .updatedDate(rs.getTimestamp("updated_at").toLocalDateTime())
+                .build();
     }
 
 
