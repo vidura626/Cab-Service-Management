@@ -37,23 +37,34 @@ public class VehicleDAOInterfaceImpl implements VehicleDAOInterface {
 
     @Override
     public Vehicle getVehicleById(int id) throws SQLException {
-        String query = "SELECT * FROM vehicles WHERE id = ?";
+        String query = "SELECT ve.*, vt.description FROM vehicles ve left join vehicle_type vt on ve.vehicle_type_id = vt.id WHERE ve.id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Vehicle.Builder()
-                        .setId(rs.getInt("id"))
-                        .setMake(rs.getString("make"))
-                        .setModel(rs.getString("model"))
-                        .setYear(rs.getInt("year"))
-                        .setLicensePlate(rs.getString("licensePlate"))
-                        .setFuelType(rs.getString("fuelType"))
-                        .setStatus(VehicleStatus.valueOf(rs.getString("status"))) // Convert stored string to VehicleStatus enum
-                        .setVehicleTypeId(rs.getInt("vehicle_type_id"))
-                        .build();
+                return mapResultSetToVehicleType(rs);
             }
             return null;
+        }
+    }
+
+    @Override
+    public boolean existsByLicence(String licence) throws SQLException {
+        String query = "SELECT COUNT(*) FROM vehicles WHERE licence = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, licence);
+            ResultSet rs = stmt.executeQuery();
+            return (rs.next() && rs.getInt(1) > 0);
+        }
+    }
+
+    @Override
+    public boolean existsById(int id) throws SQLException {
+        String query = "SELECT COUNT(*) FROM vehicles WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return (rs.next() && rs.getInt(1) > 0);
         }
     }
 
@@ -85,21 +96,12 @@ public class VehicleDAOInterfaceImpl implements VehicleDAOInterface {
     // Fetch all vehicles
     @Override
     public List<Vehicle> getAllVehicles() throws SQLException {
-        String query = "SELECT * FROM vehicles";
+        String query = "SELECT ve.*, vt.description FROM vehicles ve left join vehicle_type vt on ve.vehicle_type_id = vt.id";
         List<Vehicle> vehicles = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                vehicles.add(new Vehicle.Builder()
-                        .setId(rs.getInt("id"))
-                        .setMake(rs.getString("make"))
-                        .setModel(rs.getString("model"))
-                        .setYear(rs.getInt("year"))
-                        .setLicensePlate(rs.getString("licensePlate"))
-                        .setFuelType(rs.getString("fuelType"))
-                        .setStatus(VehicleStatus.valueOf(rs.getString("status"))) // Convert stored string to VehicleStatus enum
-                        .setVehicleTypeId(rs.getInt("vehicle_type_id"))
-                        .build());
+                vehicles.add(mapResultSetToVehicleType(rs));
             }
         }
         return vehicles;
@@ -108,46 +110,43 @@ public class VehicleDAOInterfaceImpl implements VehicleDAOInterface {
     // Fetch vehicles by vehicle type
     @Override
     public List<Vehicle> getAllVehiclesByType(int vehicleTypeId) throws SQLException {
-        String query = "SELECT * FROM vehicles WHERE vehicle_type_id = ?";
+        String query = "SELECT ve.*, vt.description FROM vehicles ve left join vehicle_type vt on ve.vehicle_type_id = vt.id WHERE ve.vehicle_type_id = ?";
         List<Vehicle> vehicles = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, vehicleTypeId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                vehicles.add(new Vehicle.Builder()
-                        .setId(rs.getInt("id"))
-                        .setMake(rs.getString("make"))
-                        .setModel(rs.getString("model"))
-                        .setYear(rs.getInt("year"))
-                        .setLicensePlate(rs.getString("licensePlate"))
-                        .setFuelType(rs.getString("fuelType"))
-                        .setStatus(VehicleStatus.valueOf(rs.getString("status"))) // Convert stored string to VehicleStatus enum
-                        .setVehicleTypeId(rs.getInt("vehicle_type_id"))
-                        .build());
+                vehicles.add(mapResultSetToVehicleType(rs));
             }
         }
         return vehicles;
     }
 
+
+    private Vehicle mapResultSetToVehicleType(ResultSet rs) throws SQLException {
+        return new Vehicle.Builder()
+                .id(rs.getInt("id"))
+                .make(rs.getString("make"))
+                .model(rs.getString("model"))
+                .year(rs.getInt("year"))
+                .licensePlate(rs.getString("licensePlate"))
+                .fuelType(rs.getString("fuelType"))
+                .status(VehicleStatus.valueOf(rs.getString("status")))
+                .vehicleTypeId(rs.getInt("vehicle_type_id"))
+                .vehicleTypeDescription(rs.getString("description"))
+                .build();
+    }
+
     // Fetch vehicles by status
     @Override
     public List<Vehicle> getAllVehiclesByStatus(VehicleStatus status) throws SQLException {
-        String query = "SELECT * FROM vehicles WHERE status = ?";
+        String query = "SELECT ve.*, vt.description FROM vehicles ve left join vehicle_type vt on ve.vehicle_type_id = vt.id WHERE ve.status = ?";
         List<Vehicle> vehicles = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, status.name()); // status is passed as a string matching VehicleStatus enum
+            stmt.setString(1, status.name());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                vehicles.add(new Vehicle.Builder()
-                        .setId(rs.getInt("id"))
-                        .setMake(rs.getString("make"))
-                        .setModel(rs.getString("model"))
-                        .setYear(rs.getInt("year"))
-                        .setLicensePlate(rs.getString("licensePlate"))
-                        .setFuelType(rs.getString("fuelType"))
-                        .setStatus(VehicleStatus.valueOf(rs.getString("status"))) // Convert stored string to VehicleStatus enum
-                        .setVehicleTypeId(rs.getInt("vehicle_type_id"))
-                        .build());
+                vehicles.add(mapResultSetToVehicleType(rs));
             }
         }
         return vehicles;

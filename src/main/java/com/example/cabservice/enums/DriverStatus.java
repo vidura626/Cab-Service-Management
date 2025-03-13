@@ -1,4 +1,4 @@
-package com.example.cabservice.util.enums;
+package com.example.cabservice.enums;
 
 public enum DriverStatus {
     AVAILABLE("Available"),
