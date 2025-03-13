@@ -44,7 +44,7 @@ public interface JsonDtoMappingInterface<T, K, W> {
      * @param request The response DTO to be converted.
      * @return The corresponding String object..
      */
-    public String resultSetToResponseDto(W request);
+    public String responseDtoToJsonString(W request);
 
     /**
      * Converts a ResultSet to Entity.
@@ -52,5 +52,5 @@ public interface JsonDtoMappingInterface<T, K, W> {
      * @param request The ResultSet to be converted.
      * @return The corresponding Entity object..
      */
-    public K resultSetToResponseDto(ResultSet resultSet) throws SQLException;
+    public K responseDtoToJsonString(ResultSet resultSet) throws SQLException;
 }
