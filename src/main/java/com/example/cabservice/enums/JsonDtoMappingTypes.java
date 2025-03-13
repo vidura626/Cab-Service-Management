@@ -1,5 +1,5 @@
 package com.example.cabservice.enums;
 
 public enum JsonDtoMappingTypes {
-    DRIVER, VEHICLE, DRIVER_VEHICLE_TYPE
+    DRIVER, VEHICLE, DRIVER_VEHICLE_TYPE, VEHICLE_TYPE
 }

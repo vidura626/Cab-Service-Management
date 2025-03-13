@@ -1,5 +1,8 @@
 package com.example.cabservice.util;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Interface for mapping between JSON, request DTOs, entities, and response DTOs.
  * This interface provides methods for converting between different representations
@@ -26,6 +29,7 @@ public interface JsonDtoMappingInterface<T, K, W> {
      * @return The corresponding entity object of type K.
      */
     public K toEntity(T request);
+    public K toEntity(T request, Long id);
 
     /**
      * Converts a response DTO to the corresponding response object.
@@ -40,5 +44,13 @@ public interface JsonDtoMappingInterface<T, K, W> {
      * @param request The response DTO to be converted.
      * @return The corresponding String object..
      */
-    public String toJson(W request);
+    public String resultSetToResponseDto(W request);
+
+    /**
+     * Converts a ResultSet to Entity.
+     *
+     * @param request The ResultSet to be converted.
+     * @return The corresponding Entity object..
+     */
+    public K resultSetToResponseDto(ResultSet resultSet) throws SQLException;
 }

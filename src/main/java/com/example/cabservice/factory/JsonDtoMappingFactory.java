@@ -8,19 +8,21 @@ import com.example.cabservice.util.json_util_mapping_impl.VehicleTypeMappingImpl
 import jdk.jshell.spi.ExecutionControl;
 
 public class JsonDtoMappingFactory {
-    public static JsonDtoMappingInterface createJsonDtoMapping(JsonDtoMappingTypes type) throws ExecutionControl.NotImplementedException {
+    public static JsonDtoMappingInterface createJsonDtoMapping(JsonDtoMappingTypes type) {
         switch (type) {
             case DRIVER -> {
                 return new DriverMappingImpl();
             }
-            case VEHICLE -> {
-                throw new ExecutionControl.NotImplementedException("Not implemented Yet");
+            case VEHICLE_TYPE -> {
+                return new VehicleTypeMappingImpl();
             }
             case DRIVER_VEHICLE_TYPE -> {
                 return new VehicleTypeMappingImpl();
             }
-            default -> throw new NotFoundException("Mapping type not found");
+            case VEHICLE -> {
+                return null;
+            }
         }
-
+        return null;
     }
 }
