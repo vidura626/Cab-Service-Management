@@ -13,7 +13,4 @@ public interface DriverServiceInterface {
     DriverResponseDto getDriverById(int driverId) throws SQLException;
     List<DriverResponseDto> getAllDrivers() throws SQLException;
     void deleteDriver(int driverId) throws SQLException, NotFoundException;
-    void setActiveStatus(int driverId, boolean isActive) throws SQLException;
-    void uploadImage(int driverId, String image) throws SQLException;
-    void changeStatus(int driverId, String status) throws SQLException;
 }
