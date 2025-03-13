@@ -29,38 +29,38 @@ public class VehicleController extends HttpServlet {
 
     // POST method for creating vehicle
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
-        String json = JsonUtil.getJsonFromRequest(request);
-        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
-        try {
-            vehicleService.addVehicle(vehicleRequestDto);
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            response.getWriter().write("{\"message\":\"Vehicle created successfully\"}");
-        } catch (AlreadyAvailableException e) {
-            response.setStatus(HttpServletResponse.SC_CONFLICT);
-            response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\":\"Error creating vehicle\"}");
-        }
+//        String json = JsonUtil.getJsonFromRequest(request);
+//        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
+//        try {
+//            vehicleService.addVehicle(vehicleRequestDto);
+//            response.setStatus(HttpServletResponse.SC_CREATED);
+//            response.getWriter().write("{\"message\":\"Vehicle created successfully\"}");
+//        } catch (AlreadyAvailableException e) {
+//            response.setStatus(HttpServletResponse.SC_CONFLICT);
+//            response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+//        } catch (Exception e) {
+//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            response.getWriter().write("{\"error\":\"Error creating vehicle\"}");
+//        }
     }
 
     // PUT method for updating vehicle
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String json = JsonUtil.getJsonFromRequest(request);
-        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        try {
-            vehicleService.updateVehicle(vehicleRequestDto, id);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write("{\"message\":\"Vehicle updated successfully\"}");
-        } catch (NotFoundException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\":\"Error updating vehicle\"}");
-        }
+//        VehicleRequestDto vehicleRequestDto = JsonUtil.parseVehicleJson(json);
+//
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        try {
+//            vehicleService.updateVehicle(vehicleRequestDto, id);
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            response.getWriter().write("{\"message\":\"Vehicle updated successfully\"}");
+//        } catch (NotFoundException e) {
+//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//            response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+//        } catch (Exception e) {
+//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            response.getWriter().write("{\"error\":\"Error updating vehicle\"}");
+//        }
     }
 
     // Implement GET and DELETE methods similarly.

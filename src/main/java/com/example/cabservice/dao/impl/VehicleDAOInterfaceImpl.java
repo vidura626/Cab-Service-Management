@@ -1,7 +1,6 @@
 package com.example.cabservice.dao.impl;
 
 import com.example.cabservice.dao.VehicleDAOInterface;
-import com.example.cabservice.dto.response.VehicleTypeResponseDto;
 import com.example.cabservice.entity.Vehicle;
 import com.example.cabservice.enums.VehicleStatus;
 
@@ -46,6 +45,26 @@ public class VehicleDAOInterfaceImpl implements VehicleDAOInterface {
                 return mapResultSetToVehicleType(rs);
             }
             return null;
+        }
+    }
+
+    @Override
+    public boolean existsByLicence(String licence) throws SQLException {
+        String query = "SELECT COUNT(*) FROM vehicles WHERE licence = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, licence);
+            ResultSet rs = stmt.executeQuery();
+            return (rs.next() && rs.getInt(1) > 0);
+        }
+    }
+
+    @Override
+    public boolean existsById(int id) throws SQLException {
+        String query = "SELECT COUNT(*) FROM vehicles WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return (rs.next() && rs.getInt(1) > 0);
         }
     }
 
