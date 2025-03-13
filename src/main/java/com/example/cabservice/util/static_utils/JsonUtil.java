@@ -1,4 +1,4 @@
-package com.example.cabservice.util;
+package com.example.cabservice.util.static_utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 

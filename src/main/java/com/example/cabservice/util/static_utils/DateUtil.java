@@ -1,4 +1,4 @@
-package com.example.cabservice.util;
+package com.example.cabservice.util.static_utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
