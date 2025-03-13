@@ -11,8 +11,6 @@ public interface VehicleDAOInterface {
     Vehicle getVehicleById(int id) throws SQLException;
     int updateVehicle(Vehicle vehicle) throws SQLException;
     void deleteVehicle(int id) throws SQLException;
-
-    // New methods to fetch all vehicles or filter them
     List<Vehicle> getAllVehicles() throws SQLException;
     List<Vehicle> getAllVehiclesByType(int vehicleTypeId) throws SQLException;
     List<Vehicle> getAllVehiclesByStatus(VehicleStatus status) throws SQLException;
