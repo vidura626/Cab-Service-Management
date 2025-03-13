@@ -1,20 +1,19 @@
 package com.example.cabservice.service.impl;
 
-import com.example.cabservice.dao.DriverDAOInterface;
+import com.example.cabservice.dao.DriverDAO;
 import com.example.cabservice.dto.request.DriverRequestDto;
 import com.example.cabservice.dto.response.DriverResponseDto;
 import com.example.cabservice.entity.Driver;
 import com.example.cabservice.exceptions.NotFoundException;
 import com.example.cabservice.service.DriverServiceInterface;
-import com.example.cabservice.util.Mapper;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class DriverServiceInterfaceImpl implements DriverServiceInterface {
-    private DriverDAOInterface driverDAO;
+    private DriverDAO driverDAO;
 
-    public DriverServiceInterfaceImpl(DriverDAOInterface driverDAO) {
+    public DriverServiceInterfaceImpl(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
 

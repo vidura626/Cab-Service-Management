@@ -1,9 +1,10 @@
-package com.example.cabservice.dto;
+package com.example.cabservice.dto.response;
 
-public class VehicleTypeDTO {
+public class VehicleTypeResponseDto {
     private Long id;
     private String description;
 
+    public VehicleTypeResponseDto() {}
     public void setId(Long id) {
         this.id = id;
     }
@@ -12,7 +13,7 @@ public class VehicleTypeDTO {
         this.description = description;
     }
 
-    private VehicleTypeDTO(Builder builder) {
+    private VehicleTypeResponseDto(Builder builder) {
         this.description = builder.description;
     }
 
@@ -30,16 +31,16 @@ public class VehicleTypeDTO {
         public Builder() {
         }
 
-        public Builder setId(Long id) {
+        public Builder id(Long id) {
             this.id = id;
             return this;
-        }    public Builder setDescription(String description) {
+        }    public Builder description(String description) {
             this.description = description;
             return this;
         }
 
-        public VehicleTypeDTO build() {
-            return new VehicleTypeDTO(this);
+        public VehicleTypeResponseDto build() {
+            return new VehicleTypeResponseDto(this);
         }
     }
 }

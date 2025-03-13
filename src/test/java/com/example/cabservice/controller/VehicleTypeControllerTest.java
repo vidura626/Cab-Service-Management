@@ -1,7 +1,6 @@
 package com.example.cabservice.controller;
 
-import com.example.cabservice.controller.VehicleTypeController;
-import com.example.cabservice.dto.VehicleTypeDTO;
+import com.example.cabservice.dto.response.VehicleTypeResponseDto;
 import com.example.cabservice.service.VehicleTypeServiceInterface;
 import com.example.cabservice.util.JsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ public class VehicleTypeControllerTest {
     private PrintWriter writer;
 
     @Captor
-    private ArgumentCaptor<VehicleTypeDTO> vehicleTypeCaptor;
+    private ArgumentCaptor<VehicleTypeResponseDto> vehicleTypeCaptor;
 
     private VehicleTypeController vehicleTypeController;
 
@@ -80,7 +79,7 @@ public class VehicleTypeControllerTest {
     public void testDoPost_Failure_Exception() throws Exception {
         // Arrange
         String json = "{\"description\":\"Sedan\"}";
-        VehicleTypeDTO vehicleTypeDTO = JsonUtil.parseVehicleTypeJson(json);
+        VehicleTypeResponseDto vehicleTypeResponseDto = JsonUtil.parseVehicleTypeJson(json);
         when(request.getReader()).thenReturn(new java.io.BufferedReader(new java.io.StringReader(json)));
         doThrow(new Exception("Database error")).when(vehicleTypeService).addVehicleType(vehicleTypeCaptor.capture());
 
@@ -98,7 +97,7 @@ public class VehicleTypeControllerTest {
         // Arrange
         String json = "{\"description\":\"SUV\"}";
         int id = 1;
-        VehicleTypeDTO vehicleTypeDTO = JsonUtil.parseVehicleTypeJson(json);
+        VehicleTypeResponseDto vehicleTypeResponseDto = JsonUtil.parseVehicleTypeJson(json);
         when(request.getParameter("id")).thenReturn(String.valueOf(id));
         when(request.getReader()).thenReturn(new java.io.BufferedReader(new java.io.StringReader(json)));
 
@@ -109,7 +108,7 @@ public class VehicleTypeControllerTest {
         verify(vehicleTypeService, times(1)).updateVehicleType(vehicleTypeCaptor.capture(), eq(id));
 
         // Assert
-        VehicleTypeDTO capturedVehicleType = vehicleTypeCaptor.getValue();  // Get the captured argument
+        VehicleTypeResponseDto capturedVehicleType = vehicleTypeCaptor.getValue();  // Get the captured argument
         assertEquals("SUV", capturedVehicleType.getDescription());  // Verify the description field
         verify(response).setStatus(HttpServletResponse.SC_OK);  // Verify response status
         verify(writer).write("{\"message\":\"Vehicle Type updated successfully\"}");  // Verify response message
@@ -136,7 +135,7 @@ public class VehicleTypeControllerTest {
     public void testDoPut_Failure_Exception() throws Exception {
         // Arrange
         String json = "{\"description\":\"SUV\"}";
-        VehicleTypeDTO vehicleTypeDTO = JsonUtil.parseVehicleTypeJson(json);
+        VehicleTypeResponseDto vehicleTypeResponseDto = JsonUtil.parseVehicleTypeJson(json);
         int id = 1;
         when(request.getParameter("id")).thenReturn(String.valueOf(id));
         when(request.getReader()).thenReturn(new java.io.BufferedReader(new java.io.StringReader(json)));
