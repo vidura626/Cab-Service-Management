@@ -20,7 +20,15 @@ public class DatabaseSetup {
               CREATE TABLE IF NOT EXISTS Driver (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
-                        license_number VARCHAR(255) NOT NULL UNIQUE,
+                        nic VARCHAR(255) NOT NULL UNIQUE,
+                        email VARCHAR(255) NOT NULL UNIQUE,
+                        dob VARCHAR(255) NOT NULL UNIQUE,
+                        licence VARCHAR(255) NOT NULL UNIQUE,
+                        image LONGTEXT NOT NULL,
+                        isActive BOOLEAN NOT NULL DEFAULT  TRUE,
+                        address Date NOT NULL,
+                        mobile_number VARCHAR(255) NOT NULL UNIQUE,
+                        driver_status ENUM('AVAILABLE', 'BUSY') DEFAULT 'AVAILABLE',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                     );
