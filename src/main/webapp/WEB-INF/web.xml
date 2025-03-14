@@ -23,4 +23,14 @@
         <url-pattern>/new-endpoint</url-pattern>
     </servlet-mapping>
 
+    <!-- Vehicle Servlet mapping -->
+    <servlet>
+        <servlet-name>VehicleTypeController</servlet-name>
+        <servlet-class>com.example.cabservice.controller.VehicleTypeController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VehicleTypeController</servlet-name>
+        <url-pattern>/vehicleType</url-pattern>
+    </servlet-mapping>
+
 </web-app>
